@@ -1,4 +1,8 @@
-The Residential Management System (RMS) is a full-stack web application that will be developed to simplify apartment administration and improve communication between the building manager and residents.
+The Residential Management System (RMS) 
+
+ER-Diagram: https://dbdiagram.io/d/RMS-69b92e9678c6c4bc7a022031
+
+It is a full-stack web application that will be developed to simplify apartment administration and improve communication between the building manager and residents.
 
 The system will be implemented using React.js for the frontend, Spring Boot for the backend REST APIs, and the H2 Database (H2 Console) for data storage during development and testing.
 
