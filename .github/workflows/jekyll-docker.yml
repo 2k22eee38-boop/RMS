@@ -8,15 +8,23 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+    # -------------------------
+    # Step 1: Checkout code
+    # -------------------------
     - name: Checkout code
       uses: actions/checkout@v4
 
     # -------------------------
-    # Backend (Maven)
+    # Step 2: Debug files (optional)
+    # -------------------------
+    - name: Debug files
+      run: ls -R
+
+    # -------------------------
+    # Step 3: Set up Java
     # -------------------------
     - name: Set up Java
       uses: actions/setup-java@v4
@@ -24,22 +32,30 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    # -------------------------
+    # Step 4: Build Backend (Maven)
+    # -------------------------
     - name: Build Backend
+      working-directory: ./Backend--Name
       run: |
+        chmod +x mvnw
         ./mvnw clean install
 
     # -------------------------
-    # Frontend (Node.js)
+    # Step 5: Set up Node.js
     # -------------------------
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
 
+    # -------------------------
+    # Step 6: Build Frontend
+    # -------------------------
     - name: Install Frontend Dependencies
-      working-directory: ./frontend
+      working-directory: ./frontend--public
       run: npm install
 
     - name: Build Frontend
-      working-directory: ./frontend
+      working-directory: ./frontend--public
       run: npm run build
