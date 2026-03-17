@@ -1,4 +1,4 @@
-name: Jekyll site CI
+name: Full Stack CI
 
 on:
   push:
@@ -8,24 +8,38 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Build the site in the jekyll/builder container
-      run: |
-        set -e
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll \
-        -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "
-          chmod -R 777 /srv/jekyll &&
-          bundle install &&
-          jekyll build --future --trace
-        "
+    # -------------------------
+    # Backend (Maven)
+    # -------------------------
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-    - name: HTML Proofer (optional)
+    - name: Build Backend
       run: |
-        gem install html-proofer
-        htmlproofer ./_site --disable-external
+        ./mvnw clean install
+
+    # -------------------------
+    # Frontend (Node.js)
+    # -------------------------
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Frontend Dependencies
+      working-directory: ./frontend
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: ./frontend
+      run: npm run build
