@@ -12,19 +12,17 @@ jobs:
 
     steps:
     # -------------------------
-    # Step 1: Checkout code
+    # Checkout code
     # -------------------------
     - name: Checkout code
       uses: actions/checkout@v4
 
     # -------------------------
-    # Step 2: Debug files (optional)
+    # Debug files (optional)
     # -------------------------
-    - name: Debug files
-      run: ls -R
-
+  
     # -------------------------
-    # Step 3: Set up Java
+    # Set up Java
     # -------------------------
     - name: Set up Java
       uses: actions/setup-java@v4
@@ -33,16 +31,16 @@ jobs:
         java-version: '17'
 
     # -------------------------
-    # Step 4: Build Backend (Maven)
+    # Build Backend (Maven)
     # -------------------------
     - name: Build Backend
-      working-directory: ./Backend--Name
+      working-directory: ./Backend
       run: |
         chmod +x mvnw
         ./mvnw clean install
 
     # -------------------------
-    # Step 5: Set up Node.js
+    # Set up Node.js
     # -------------------------
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -50,12 +48,12 @@ jobs:
         node-version: '18'
 
     # -------------------------
-    # Step 6: Build Frontend
+    # Build Frontend
     # -------------------------
     - name: Install Frontend Dependencies
-      working-directory: ./frontend--public
+      working-directory: ./frontend
       run: npm install
 
     - name: Build Frontend
-      working-directory: ./frontend--public
+      working-directory: ./frontend
       run: npm run build
