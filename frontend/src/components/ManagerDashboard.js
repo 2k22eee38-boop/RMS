@@ -81,7 +81,7 @@ const ManagerDashboard = () => {
                 password: resPassword,
                 flatNo,
                 familyLeader,
-                memberCount: Number.parseInt(memberCount),
+                memberCount: parseInt(memberCount),
                 phone,
                 email
             });
