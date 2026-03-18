@@ -4,7 +4,7 @@ import api from '../api';
 
 const ManagerDashboard = () => {
     const [activeTab, setActiveTab] = useState('residents');
-    
+
     // Residents Data
     const [residents, setResidents] = useState([]);
     const [resUsername, setResUsername] = useState('');
@@ -14,7 +14,6 @@ const ManagerDashboard = () => {
     const [memberCount, setMemberCount] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    //const [resMessage, setResMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
 
     // Notices Data
@@ -77,12 +76,12 @@ const ManagerDashboard = () => {
     const handleAddResident = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/manager/residents', { 
-                username: resUsername, 
+            await api.post('/manager/residents', {
+                username: resUsername,
                 password: resPassword,
                 flatNo,
                 familyLeader,
-                memberCount: parseInt(memberCount),
+                memberCount: Number.parseInt(memberCount),
                 phone,
                 email
             });
@@ -102,7 +101,7 @@ const ManagerDashboard = () => {
     };
 
     const handleDeleteResident = async (id) => {
-        if (window.confirm('Are you sure you want to delete this resident account? This action cannot be undone.')) {
+        if (globalThis.confirm('Are you sure you want to delete this resident account? This action cannot be undone.')) {
             try {
                 await api.delete(`/manager/residents/${id}`);
                 alert('Resident deleted successfully!');
@@ -127,7 +126,7 @@ const ManagerDashboard = () => {
     };
 
     const handleDeleteNotice = async (id) => {
-        if(window.confirm('Delete this notice?')) {
+        if (globalThis.confirm('Delete this notice?')) {
             try {
                 await api.delete(`/manager/notices/${id}`);
                 fetchNotices();
@@ -213,8 +212,8 @@ const ManagerDashboard = () => {
                                                 <td>{r.email || 'N/A'}</td>
                                                 <td>{r.username}</td>
                                                 <td>
-                                                    <button 
-                                                        className="btn-icon btn-danger" 
+                                                    <button
+                                                        className="btn-icon btn-danger"
                                                         title="Delete Resident"
                                                         onClick={() => handleDeleteResident(r.id)}
                                                     >
@@ -242,35 +241,48 @@ const ManagerDashboard = () => {
                                     <form onSubmit={handleAddResident}>
                                         <div className="form-grid">
                                             <div className="form-group">
-                                                <label>Flat Number</label>
-                                                <input type="text" placeholder="e.g. A-101" value={flatNo} onChange={e => setFlatNo(e.target.value)} required />
+                                                <label>Flat Number
+                                                    <input type="text" placeholder="e.g. A-101" value={flatNo} onChange={e => setFlatNo(e.target.value)} required />
+                                                </label>
                                             </div>
                                             <div className="form-group">
-                                                <label>Family Leader Name</label>
-                                                <input type="text" placeholder="Full Name" value={familyLeader} onChange={e => setFamilyLeader(e.target.value)} required />
+                                                <label>Family Leader Name
+                                                    <input type="text" placeholder="Full Name" value={familyLeader} onChange={e => setFamilyLeader(e.target.value)} required />
+                                                </label>
+
                                             </div>
                                             <div className="form-group">
-                                                <label>Number of Members</label>
-                                                <input type="number" value={memberCount} onChange={e => setMemberCount(e.target.value)} required />
+                                                <label>Number of Members
+                                                    <input type="number" value={memberCount} onChange={e => setMemberCount(e.target.value)} required />
+                                                </label>
+
                                             </div>
                                             <div className="form-group">
-                                                <label>Contact Number</label>
-                                                <input type="tel" placeholder="+91 ..." value={phone} onChange={e => setPhone(e.target.value)} required />
+                                                <label>Contact Number
+                                                    <input type="tel" placeholder="+91 ..." value={phone} onChange={e => setPhone(e.target.value)} required />
+                                                </label>
+
                                             </div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Email Address</label>
-                                            <input type="email" placeholder="resident@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                                            <label>Email Address
+                                                <input type="email" placeholder="resident@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                                            </label>
+
                                         </div>
                                         <div className="form-divider"></div>
                                         <div className="form-grid">
                                             <div className="form-group">
-                                                <label>Login Username</label>
-                                                <input type="text" value={resUsername} onChange={e => setResUsername(e.target.value)} required />
+                                                <label>Login Username
+                                                    <input type="text" value={resUsername} onChange={e => setResUsername(e.target.value)} required />
+                                                </label>
+
                                             </div>
                                             <div className="form-group">
-                                                <label>Login Password</label>
-                                                <input type="password" value={resPassword} onChange={e => setResPassword(e.target.value)} required />
+                                                <label>Login Password
+                                                    <input type="password" value={resPassword} onChange={e => setResPassword(e.target.value)} required />
+                                                </label>
+
                                             </div>
                                         </div>
                                         <div className="form-actions">
@@ -309,8 +321,8 @@ const ManagerDashboard = () => {
                                             <h4>{notice.title}</h4>
                                             <p style={{ color: '#666', fontSize: '12px', margin: '4px 0 12px 0' }}>{new Date(notice.date).toLocaleString()}</p>
                                         </div>
-                                        <button 
-                                            className="btn-icon btn-danger" 
+                                        <button
+                                            className="btn-icon btn-danger"
                                             title="Delete Notice"
                                             onClick={() => handleDeleteNotice(notice.id)}
                                         >
@@ -358,8 +370,8 @@ const ManagerDashboard = () => {
                                                 </span>
                                             </td>
                                             <td>
-                                                <select 
-                                                    value={comp.status} 
+                                                <select
+                                                    value={comp.status}
                                                     onChange={(e) => handleUpdateComplaintStatus(comp.id, e.target.value)}
                                                     style={{ padding: '5px', borderRadius: '4px' }}
                                                 >
@@ -409,15 +421,15 @@ const ManagerDashboard = () => {
                                             <td>
                                                 {req.status === 'PENDING' && (
                                                     <div style={{ display: 'flex', gap: '5px' }}>
-                                                        <button 
-                                                            className="btn btn-secondary" 
+                                                        <button
+                                                            className="btn btn-secondary"
                                                             style={{ padding: '5px 10px', fontSize: '12px', backgroundColor: '#2ecc71' }}
                                                             onClick={() => handleUpdateVacationStatus(req.id, 'ACCEPTED')}
                                                         >
                                                             Accept
                                                         </button>
-                                                        <button 
-                                                            className="btn btn-secondary" 
+                                                        <button
+                                                            className="btn btn-secondary"
                                                             style={{ padding: '5px 10px', fontSize: '12px', backgroundColor: '#e74c3c' }}
                                                             onClick={() => handleUpdateVacationStatus(req.id, 'REJECTED')}
                                                         >
