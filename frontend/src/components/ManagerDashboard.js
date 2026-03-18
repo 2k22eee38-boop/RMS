@@ -14,7 +14,7 @@ const ManagerDashboard = () => {
     const [memberCount, setMemberCount] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    //const [resMessage, setResMessage] = useState('');
+    const [resMessage, setResMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
 
     // Notices Data
@@ -82,7 +82,7 @@ const ManagerDashboard = () => {
                 password: resPassword,
                 flatNo,
                 familyLeader,
-                memberCount: parseInt(memberCount),
+                memberCount: Number.parseInt(memberCount),
                 phone,
                 email
             });
