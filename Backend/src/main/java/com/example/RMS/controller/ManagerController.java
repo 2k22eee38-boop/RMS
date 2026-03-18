@@ -1,8 +1,8 @@
 package com.example.RMS.controller;
 
-import com.examle.RMS.dto.NoticeRequest;
-import com.example.RMS.dto.StatusUpdateRequest;
-import com.example.RMS.dto.UserRequest;
+import com.example.RMS.dto.Request.NoticeRequest;
+import com.example.RMS.dto.Request.StatusUpdateRequest;
+import com.example.RMS.dto.Request.UserRequest;
 import com.example.RMS.entity.Complaint;
 import com.example.RMS.entity.Notice;
 import com.example.RMS.entity.User;
@@ -10,7 +10,6 @@ import com.example.RMS.entity.VacationRequest;
 import com.example.RMS.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

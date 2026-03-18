@@ -1,7 +1,7 @@
 package com.example.RMS.service;
 
-import com.example.RMS.dto.NoticeRequest;
-import com.example.RMS.dto.UserRequest;
+import com.example.RMS.dto.Request.NoticeRequest;
+import com.example.RMS.dto.Request.UserRequest;
 import com.example.RMS.entity.Complaint;
 import com.example.RMS.entity.Notice;
 import com.example.RMS.entity.User;
