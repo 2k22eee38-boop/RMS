@@ -15,6 +15,7 @@ const ManagerDashboard = () => {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     //const [resMessage, setResMessage] = useState('');
+  
     const [showModal, setShowModal] = useState(false);
 
     // Notices Data
