@@ -242,31 +242,55 @@ const ManagerDashboard = () => {
                                         <div className="form-grid">
                                             <div className="form-group">
                                                 <label>Flat Number
-                                                    <input type="text" placeholder="e.g. A-101" value={flatNo} onChange={e => setFlatNo(e.target.value)} required />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="e.g. A-101"
+                                                        value={flatNo}
+                                                        onChange={e => setFlatNo(e.target.value)}
+                                                        required />
                                                 </label>
                                             </div>
                                             <div className="form-group">
                                                 <label>Family Leader Name
-                                                    <input type="text" placeholder="Full Name" value={familyLeader} onChange={e => setFamilyLeader(e.target.value)} required />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Full Name"
+                                                        value={familyLeader}
+                                                        onChange={e => setFamilyLeader(e.target.value)}
+                                                        required />
                                                 </label>
 
                                             </div>
                                             <div className="form-group">
                                                 <label>Number of Members
-                                                    <input type="number" value={memberCount} onChange={e => setMemberCount(e.target.value)} required />
+                                                    <input
+                                                        type="number"
+                                                        value={memberCount}
+                                                        onChange={e => setMemberCount(e.target.value)}
+                                                        required />
                                                 </label>
 
                                             </div>
                                             <div className="form-group">
                                                 <label>Contact Number
-                                                    <input type="tel" placeholder="+91 ..." value={phone} onChange={e => setPhone(e.target.value)} required />
+                                                    <input
+                                                        type="tel"
+                                                        placeholder="+91 ..."
+                                                        value={phone}
+                                                        onChange={e => setPhone(e.target.value)}
+                                                        required />
                                                 </label>
 
                                             </div>
                                         </div>
                                         <div className="form-group">
                                             <label>Email Address
-                                                <input type="email" placeholder="resident@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                                                <input 
+                                                type="email" 
+                                                placeholder="resident@example.com" 
+                                                value={email} 
+                                                onChange={e => setEmail(e.target.value)} 
+                                                required />
                                             </label>
 
                                         </div>
@@ -274,13 +298,19 @@ const ManagerDashboard = () => {
                                         <div className="form-grid">
                                             <div className="form-group">
                                                 <label>Login Username
-                                                    <input type="text" value={resUsername} onChange={e => setResUsername(e.target.value)} required />
+                                                    <input 
+                                                    type="text" 
+                                                    value={resUsername} onChange={e => setResUsername(e.target.value)} required />
                                                 </label>
 
                                             </div>
                                             <div className="form-group">
                                                 <label>Login Password
-                                                    <input type="password" value={resPassword} onChange={e => setResPassword(e.target.value)} required />
+                                                    <input 
+                                                    type="password" 
+                                                    value={resPassword} 
+                                                    onChange={e => setResPassword(e.target.value)} 
+                                                    required />
                                                 </label>
 
                                             </div>
