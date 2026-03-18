@@ -1,20 +1,22 @@
-package com.rms.backend.service;
-
-import com.rms.backend.dto.ComplaintRequest;
-import com.rms.backend.entity.Complaint;
-import com.rms.backend.entity.Notice;
-import com.rms.backend.entity.User;
-import com.rms.backend.entity.VacationRequest;
-import com.rms.backend.repository.ComplaintRepository;
-import com.rms.backend.repository.NoticeRepository;
-import com.rms.backend.repository.UserRepository;
-import com.rms.backend.repository.VacationRequestRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+package com.example.RMS.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.RMS.dto.Request.ComplaintRequest;
+import com.example.RMS.entity.Complaint;
+import com.example.RMS.entity.Notice;
+import com.example.RMS.entity.User;
+import com.example.RMS.entity.VacationRequest;
+import com.example.RMS.repository.ComplaintRepository;
+import com.example.RMS.repository.NoticeRepository;
+import com.example.RMS.repository.UserRepository;
+import com.example.RMS.repository.VacationRequestRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
