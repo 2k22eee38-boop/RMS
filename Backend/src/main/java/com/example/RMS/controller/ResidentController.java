@@ -1,11 +1,11 @@
-package com.rms.backend.controller;
+package com.example.RMS.controller;
 
-import com.rms.backend.dto.ComplaintRequest;
-import com.rms.backend.dto.VacationRequestDTO;
-import com.rms.backend.entity.Complaint;
-import com.rms.backend.entity.Notice;
-import com.rms.backend.entity.VacationRequest;
-import com.rms.backend.service.ResidentService;
+import com.example.RMS.dto.Request.ComplaintRequest; // Assuming path based on others
+import com.example.RMS.dto.Request.VacationRequestDTO; // Assuming path based on others
+import com.example.RMS.entity.Complaint;
+import com.example.RMS.entity.Notice;
+import com.example.RMS.entity.VacationRequest;
+import com.example.RMS.service.ResidentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
