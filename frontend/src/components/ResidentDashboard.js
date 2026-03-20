@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api';
+import Navbar from '../components/Navbar';
+import '../styles/ResidentDashboard.css';
+import {
+    Bell,
+    MessageSquare,
+    Calendar,
+    LogOut,
+    Send,
+    Clock,
+    Info,
+    CheckCircle2,
+    Building2
+} from 'lucide-react';
+import api from '../api/api';
 
 const ResidentDashboard = () => {
     const [activeTab, setActiveTab] = useState('notices');
     const [notices, setNotices] = useState([]);
     const [complaints, setComplaints] = useState([]);
     const [vacationRequests, setVacationRequests] = useState([]);
-    
+
     // Complaint Form
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -78,9 +91,9 @@ const ResidentDashboard = () => {
     const handleVacationRequest = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/resident/vacate', { 
+            await api.post('/resident/vacate', {
                 vacateDate,
-                reason: vacationReason 
+                reason: vacationReason
             });
             setVacationMessage('Vacation notice submitted successfully!');
             setVacateDate('');
@@ -103,31 +116,44 @@ const ResidentDashboard = () => {
 
     return (
         <div className="app-container">
-            <div className="header">
-                <h2>Resident Dashboard</h2>
-                <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
+            <div className="header" style={{ borderBottom: 'none' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Building2 size={32} color="var(--primary)" />
+                    <h2>Resident Portal</h2>
+                </div>
+                <button className="btn btn-secondary" onClick={handleLogout}>
+                    <LogOut size={18} /> Logout
+                </button>
             </div>
 
-            <div className="tabs">
-                <div 
-                    className={`tab ${activeTab === 'notices' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('notices')}
-                >
-                    Notices
-                </div>
-                <div 
-                    className={`tab ${activeTab === 'complaints' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('complaints')}
-                >
-                    Complaints
-                </div>
-                <div 
-                    className={`tab ${activeTab === 'vacate' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('vacate')}
-                >
-                    Vacate
+            <div style={{
+                height: '260px',
+                background: `linear-gradient(rgba(26, 44, 66, 0.75), rgba(26, 44, 66, 0.4)), url('/assets/lobby.png')`,
+                backgroundSize: 'cover',
+                boxShadow: '0 8px 32px rgba(26, 44, 66, 0.15)',
+                backgroundPosition: 'center',
+                borderRadius: '16px',
+                marginBottom: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '40px',
+                color: '#fff'
+            }}>
+                <div>
+                    <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: '800' }}>Good Day</h1>
+                    <p style={{ margin: '8px 0 0 0', opacity: 0.9, fontSize: '1.1rem' }}>Welcome to your luxury community portal</p>
                 </div>
             </div>
+
+            <Navbar
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                tabs={[
+                    { id: 'notices', label: <><Bell size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-bottom' }} /> Notices</> },
+                    { id: 'complaints', label: <><MessageSquare size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-bottom' }} /> Complaints</> },
+                    { id: 'vacate', label: <><Calendar size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-bottom' }} /> Vacate</> }
+                ]}
+            />
 
             <div className="card">
                 {activeTab === 'notices' && (
@@ -154,20 +180,20 @@ const ResidentDashboard = () => {
                         <form onSubmit={handleRaiseComplaint} style={{ marginBottom: '30px' }}>
                             <div className="form-group">
                                 <label>Title</label>
-                                <input 
-                                    type="text" 
-                                    value={title} 
-                                    onChange={e => setTitle(e.target.value)} 
-                                    required 
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div className="form-group">
                                 <label>Description</label>
-                                <textarea 
-                                    rows="4" 
-                                    value={description} 
-                                    onChange={e => setDescription(e.target.value)} 
-                                    required 
+                                <textarea
+                                    rows="4"
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    required
                                 ></textarea>
                             </div>
                             <button type="submit" className="btn">Submit Complaint</button>
@@ -213,20 +239,20 @@ const ResidentDashboard = () => {
                         <form onSubmit={handleVacationRequest} style={{ marginBottom: '30px' }}>
                             <div className="form-group">
                                 <label>Intended Vacate Date</label>
-                                <input 
-                                    type="date" 
-                                    value={vacateDate} 
+                                <input
+                                    type="date"
+                                    value={vacateDate}
                                     min={minDateStr}
-                                    onChange={e => setVacateDate(e.target.value)} 
-                                    required 
+                                    onChange={e => setVacateDate(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div className="form-group">
                                 <label>Reason/Message</label>
-                                <textarea 
-                                    rows="3" 
-                                    value={vacationReason} 
-                                    onChange={e => setVacationReason(e.target.value)} 
+                                <textarea
+                                    rows="3"
+                                    value={vacationReason}
+                                    onChange={e => setVacationReason(e.target.value)}
                                     placeholder="Optional: Why are you vacating?"
                                 ></textarea>
                             </div>
