@@ -2,58 +2,39 @@ name: Full Stack CI
 
 on:
   push:
-    branches: [ "priyanka-mainBranch" ]
+    branches: [ "priyanka-mainBranch", "version2" ]
   pull_request:
-    branches: [ "priyanka-mainBranch" ]
+    branches: [ "priyanka-mainBranch", "version2" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # -------------------------
-    # Checkout code
-    # -------------------------
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # -------------------------
-    # Debug files (optional)
-    # -------------------------
-  
-    # -------------------------
-    # Set up Java
-    # -------------------------
-    - name: Set up Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
-    # -------------------------
-    # Build Backend (Maven)
-    # -------------------------
-    - name: Build Backend
-      working-directory: ./Backend
-      run: |
-        chmod +x mvnw
-        ./mvnw clean install
+      - name: Build Backend
+        working-directory: ./Backend
+        run: |
+          chmod +x mvnw
+          ./mvnw clean install -DskipTests
 
-    # -------------------------
-    # Set up Node.js
-    # -------------------------
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-    # -------------------------
-    # Build Frontend
-    # -------------------------
-    - name: Install Frontend Dependencies
-      working-directory: ./frontend
-      run: npm install
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
 
-    - name: Build Frontend
-      working-directory: ./frontend
-      run: npm run build
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build

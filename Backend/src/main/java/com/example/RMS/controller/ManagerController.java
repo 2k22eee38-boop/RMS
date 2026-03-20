@@ -3,7 +3,12 @@ package com.example.RMS.controller;
 import com.example.RMS.dto.Request.NoticeRequest;
 import com.example.RMS.dto.Request.StatusUpdateRequest;
 import com.example.RMS.dto.Request.UserRequest;
+import com.example.RMS.dto.Request.EmployeeRequest;
+import com.example.RMS.dto.Request.FacilityUpdateRequest;
+import com.example.RMS.entity.AmenityBooking;
 import com.example.RMS.entity.Complaint;
+import com.example.RMS.entity.Employee;
+import com.example.RMS.entity.Facility;
 import com.example.RMS.entity.Notice;
 import com.example.RMS.entity.User;
 import com.example.RMS.entity.VacationRequest;
@@ -21,6 +26,42 @@ import java.util.List;
 public class ManagerController {
 
     private final ManagerService managerService;
+
+    @GetMapping("/facilities")
+    public ResponseEntity<List<Facility>> getAllFacilities() {
+        return ResponseEntity.ok(managerService.getAllFacilities());
+    }
+
+    @PutMapping("/facilities/{id}")
+    public ResponseEntity<Facility> updateFacility(@PathVariable Long id, @RequestBody FacilityUpdateRequest request) {
+        return ResponseEntity.ok(managerService.updateFacility(id, request));
+    }
+
+    @GetMapping("/amenities")
+    public ResponseEntity<List<AmenityBooking>> getAllAmenityBookings() {
+        return ResponseEntity.ok(managerService.getAllAmenityBookings());
+    }
+
+    @PutMapping("/amenities/{id}/status")
+    public ResponseEntity<AmenityBooking> updateAmenityBookingStatus(@PathVariable Long id, @RequestBody StatusUpdateRequest request) {
+        return ResponseEntity.ok(managerService.updateAmenityBookingStatus(id, request.getStatus()));
+    }
+
+    @PostMapping("/employees")
+    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeRequest request) {
+        return ResponseEntity.ok(managerService.addEmployee(request));
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(managerService.getAllEmployees());
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+        managerService.deleteEmployee(id);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/residents")
     public ResponseEntity<User> addResident(@RequestBody UserRequest request) {
@@ -74,3 +115,4 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.updateVacationStatus(id, request.getStatus()));
     }
 }
+
