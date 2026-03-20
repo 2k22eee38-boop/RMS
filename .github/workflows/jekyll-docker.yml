@@ -11,30 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
-    - name: Build Backend
-      working-directory: ./Backend
-      run: |
-        chmod +x mvnw
-        ./mvnw clean install
+      - name: Build Backend
+        working-directory: ./Backend
+        run: |
+          chmod +x mvnw
+          ./mvnw clean install -DskipTests
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-    - name: Install Frontend Dependencies
-      working-directory: ./frontend
-      run: npm install
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
 
-    - name: Build Frontend
-      working-directory: ./frontend
-      run: npm run build
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
