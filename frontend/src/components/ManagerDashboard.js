@@ -18,7 +18,13 @@ import {
     AlertTriangle,
     CheckCircle2,
     Building2,
-    Clock
+    Clock,
+    Dumbbell,
+    Waves,
+    Tv,
+    Gamepad2,
+    Music,
+    Library
 } from 'lucide-react';
 import api from '../api/api';
 
@@ -42,20 +48,105 @@ const ManagerDashboard = () => {
     const [noticeContent, setNoticeContent] = useState('');
     const [noticeMessage, setNoticeMessage] = useState('');
 
-    // Complaints Data
-    const [complaints, setComplaints] = useState([]);
-
     // Vacation Data
     const [vacationRequests, setVacationRequests] = useState([]);
+
+    // Amenities Data
+    const [facilities, setFacilities] = useState([]);
+    const [allBookings, setAllBookings] = useState([]);
+
+    // Facility Edit Form
+    const [editingFacility, setEditingFacility] = useState(null);
+    const [supervisorName, setSupervisorName] = useState('');
+    const [supervisorPhone, setSupervisorPhone] = useState('');
+    const [isClosed, setIsClosed] = useState(false);
+    const [closedFrom, setClosedFrom] = useState('');
+    const [closedUntil, setClosedUntil] = useState('');
+    const [closureReason, setClosureReason] = useState('');
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (activeTab === 'residents') fetchResidents();
-        else if (activeTab === 'notices') fetchNotices();
-        else if (activeTab === 'complaints') fetchComplaints();
-        else if (activeTab === 'vacation-requests') fetchVacationRequests();
-    }, [activeTab]);
+        if (!localStorage.getItem('managerId')) {
+            navigate('/login');
+            return;
+        }
+
+        if (activeTab === 'residents') {
+            fetchResidents();
+        } else if (activeTab === 'notices') {
+            fetchNotices();
+        } else if (activeTab === 'complaints') {
+            fetchComplaints();
+        } else if (activeTab === 'vacation-requests') {
+            fetchVacationRequests();
+        } else if (activeTab === 'amenities') {
+            fetchFacilities();
+            fetchAllBookings();
+        }
+    }, [activeTab, navigate]);
+
+    const fetchFacilities = async () => {
+        try {
+            const res = await api.get('/manager/facilities');
+            setFacilities(res.data);
+        } catch (error) {
+            console.error('Failed to fetch facilities', error);
+        }
+    };
+
+    const fetchAllBookings = async () => {
+        try {
+            const res = await api.get('/manager/amenity-bookings');
+            setAllBookings(res.data);
+        } catch (error) {
+            console.error('Failed to fetch bookings', error);
+        }
+    };
+
+    const handleUpdateFacility = async (e) => {
+        e.preventDefault();
+        try {
+            await api.put(`/manager/facilities/${editingFacility.id}`, {
+                supervisorName,
+                supervisorPhone,
+                closed: isClosed,
+                closedFrom: isClosed ? closedFrom : null,
+                closedUntil: isClosed ? closedUntil : null,
+                closureReason: isClosed ? closureReason : ""
+            });
+            setEditingFacility(null);
+            fetchFacilities();
+        } catch (error) {
+            console.error('Failed to update facility', error);
+        }
+    };
+
+    const handleBookingAction = async (bookingId, status) => {
+        try {
+            await api.put(`/manager/amenity-bookings/${bookingId}/status`, null, {
+                params: { status }
+            });
+            fetchAllBookings();
+        } catch (error) {
+            console.error('Failed to update booking status', error);
+        }
+    };
+
+    const getAmenityIcon = (name) => {
+        switch (name) {
+            case 'SWIMMING_POOL': return <Waves size={24} />;
+            case 'GYM': return <Dumbbell size={24} />;
+            case 'THEATRE': return <Tv size={24} />;
+            case 'GAME_COURT': return <Gamepad2 size={24} />;
+            case 'PARTY_HALL': return <Music size={24} />;
+            default: return <Library size={24} />;
+        }
+    };
+
+    const formatAmenityName = (name) => {
+        return name.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    };
 
     const fetchResidents = async () => {
         try {
@@ -179,17 +270,19 @@ const ManagerDashboard = () => {
 
     return (
         <div className="app-container">
-            <div className="header" style={{ borderBottom: 'none' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Building2 size={32} color="var(--primary)" />
-                    <h2>Property Management</h2>
-                </div>
-                <div style={{ display: 'flex', gap: '16px' }}>
-                    <button className="btn btn-secondary" onClick={handleLogout}>
-                        <LogOut size={18} /> Log Out
-                    </button>
-                </div>
-            </div>
+            <Navbar
+                title="Property Management"
+                onLogout={handleLogout}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                tabs={[
+                    { id: 'residents', label: 'Residents' },
+                    { id: 'notices', label: 'Notices' },
+                    { id: 'amenities', label: 'Amenities' },
+                    { id: 'complaints', label: 'Complaints' },
+                    { id: 'vacation-requests', label: 'Vacation' }
+                ]}
+            />
 
             <div style={{
                 background: `linear-gradient(rgba(26, 44, 66, 0.85), rgba(26, 44, 66, 0.7)), url('/assets/manager_bg.png')`,
@@ -198,6 +291,7 @@ const ManagerDashboard = () => {
                 color: '#fff',
                 padding: '32px 40px',
                 borderRadius: '16px',
+                marginTop: '32px',
                 marginBottom: '40px',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -260,17 +354,6 @@ const ManagerDashboard = () => {
                     </div>
                 </div>
             </div>
-
-            <Navbar
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                tabs={[
-                    { id: 'residents', label: 'Residents' },
-                    { id: 'notices', label: 'Notices' },
-                    { id: 'complaints', label: 'Complaints' },
-                    { id: 'vacation-requests', label: 'Vacation' }
-                ]}
-            />
 
             <div className="card">
                 {activeTab === 'residents' && (
@@ -520,6 +603,185 @@ const ManagerDashboard = () => {
                                     ))}
                                 </tbody>
                             </table>
+                        )}
+                    </div>
+                )}
+
+                {activeTab === 'amenities' && (
+                    <div style={{ padding: '20px' }}>
+                        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                            <div>
+                                <h2 style={{ fontSize: '1.8rem', color: 'var(--primary)', marginBottom: '8px' }}>Amenity Management</h2>
+                                <p style={{ color: 'var(--text-muted)' }}>Manage property facilities and oversee resident bookings</p>
+                            </div>
+                        </div>
+
+                        <div className="card" style={{ padding: '24px', marginBottom: '40px' }}>
+                            <h3 style={{ marginBottom: '20px', borderBottom: '2px solid var(--secondary)', paddingBottom: '12px' }}>Property Facilities</h3>
+                            <div className="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Facility</th>
+                                            <th>Supervisor</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {facilities.map(facility => (
+                                            <tr key={facility.id}>
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                        <div style={{ color: 'var(--primary)' }}>{getAmenityIcon(facility.name)}</div>
+                                                        <strong>{formatAmenityName(facility.name)}</strong>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style={{ fontWeight: '600' }}>{facility.supervisorName || 'Not Set'}</div>
+                                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{facility.supervisorPhone || ''}</div>
+                                                </td>
+                                                <td>
+                                                    <span className={`status-badge ${facility.closed ? 'status-REJECTED' : 'status-ACCEPTED'}`}>
+                                                        {facility.closed ? 'Closed' : 'Active'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button className="btn btn-secondary" style={{ padding: '6px 15px', fontSize: '13px' }} onClick={() => {
+                                                        setEditingFacility(facility);
+                                                        setSupervisorName(facility.supervisorName || '');
+                                                        setSupervisorPhone(facility.supervisorPhone || '');
+                                                        setIsClosed(facility.closed);
+                                                        setClosedFrom(facility.closedFrom || '');
+                                                        setClosedUntil(facility.closedUntil || '');
+                                                        setClosureReason(facility.closureReason || '');
+                                                    }}>
+                                                        Edit Facility
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div className="card" style={{ padding: '24px' }}>
+                            <h3 style={{ marginBottom: '20px', borderBottom: '2px solid var(--secondary)', paddingBottom: '12px' }}>Resident Booking Requests</h3>
+                            {allBookings.length === 0 ? <p style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>No bookings requested yet.</p> : (
+                                <div className="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Resident</th>
+                                                <th>Facility</th>
+                                                <th>Booking Details</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {allBookings.map(booking => (
+                                                <tr key={booking.id}>
+                                                    <td>
+                                                        <div style={{ fontWeight: '700' }}>{booking.resident?.familyLeader}</div>
+                                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Flat {booking.resident?.flatNo}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                            {getAmenityIcon(booking.amenity)}
+                                                            {formatAmenityName(booking.amenity)}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div style={{ fontWeight: '500' }}>{booking.bookingDate}</div>
+                                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                                            {booking.isFullDay ? 'Full Day' : `${booking.startTime} - ${booking.endTime}`}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span className={`status-badge status-${booking.status}`}>
+                                                            {booking.status}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {booking.status === 'PENDING' && (
+                                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                                <button 
+                                                                    className="btn" 
+                                                                    style={{ padding: '8px', background: 'var(--accent)', minWidth: '40px' }}
+                                                                    onClick={() => handleBookingAction(booking.id, 'APPROVED')}
+                                                                >
+                                                                    <Check size={18} />
+                                                                </button>
+                                                                <button 
+                                                                    className="btn btn-secondary" 
+                                                                    style={{ padding: '8px', borderColor: 'var(--danger)', color: 'var(--danger)', minWidth: '40px' }}
+                                                                    onClick={() => handleBookingAction(booking.id, 'REJECTED')}
+                                                                >
+                                                                    <X size={18} />
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+
+                        {editingFacility && (
+                            <div className="modal-overlay">
+                                <div className="modal-content" style={{ maxWidth: '600px' }}>
+                                    <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', borderBottom: '1px solid var(--border)', paddingBottom: '15px' }}>
+                                        <h3 style={{ margin: 0, color: 'var(--primary)' }}>Manage {formatAmenityName(editingFacility.name)}</h3>
+                                        <button style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--text-muted)' }} onClick={() => setEditingFacility(null)}>&times;</button>
+                                    </div>
+                                    <form onSubmit={handleUpdateFacility}>
+                                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                                            <div className="form-group">
+                                                <label>Supervisor Name</label>
+                                                <input type="text" value={supervisorName} onChange={e => setSupervisorName(e.target.value)} />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Supervisor Phone</label>
+                                                <input type="text" value={supervisorPhone} onChange={e => setSupervisorPhone(e.target.value)} />
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
+                                            <input type="checkbox" id="facilityClosed" checked={isClosed} onChange={e => setIsClosed(e.target.checked)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                            <label htmlFor="facilityClosed" style={{ margin: 0, cursor: 'pointer', fontWeight: '600' }}>Mark Facility as Temporarily Closed</label>
+                                        </div>
+
+                                        {isClosed && (
+                                            <div style={{ background: 'rgba(231, 76, 60, 0.05)', padding: '20px', borderRadius: '8px', border: '1px solid rgba(231, 76, 60, 0.1)', marginBottom: '20px' }}>
+                                                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '15px' }}>
+                                                    <div className="form-group">
+                                                        <label style={{ color: 'var(--danger)' }}>Closed From</label>
+                                                        <input type="date" value={closedFrom} onChange={e => setClosedFrom(e.target.value)} required={isClosed} />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label style={{ color: 'var(--danger)' }}>Closed Until</label>
+                                                        <input type="date" value={closedUntil} onChange={e => setClosedUntil(e.target.value)} required={isClosed} />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label style={{ color: 'var(--danger)' }}>Closure Reason</label>
+                                                    <textarea value={closureReason} onChange={e => setClosureReason(e.target.value)} placeholder="e.g., Annual maintenance, renovation..." required={isClosed} rows="3" />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div className="form-actions" style={{ display: 'flex', gap: '12px', marginTop: '30px' }}>
+                                            <button type="submit" className="btn" style={{ flex: 1, height: '45px', background: 'var(--accent)' }}>Save Changes</button>
+                                            <button type="button" className="btn btn-secondary" style={{ flex: 1, height: '45px' }} onClick={() => setEditingFacility(null)}>Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         )}
                     </div>
                 )}

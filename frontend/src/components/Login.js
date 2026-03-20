@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, User, Lock, AlertCircle, Building2, ShieldCheck, Clock } from 'lucide-react';
+import { LogIn, User, Lock, AlertCircle, Building2, ShieldCheck } from 'lucide-react';
 import api from '../api/api';
 import '../styles/Login.css';
 
@@ -43,7 +43,7 @@ const Login = () => {
                     <p style={{ fontSize: '1.25rem', opacity: 0.9, maxWidth: '500px', lineHeight: '1.8' }}>
                         Welcome to the official Residential Management System. Secure, reliable, and integrated community management at your fingertips.
                     </p>
-                    
+
                 </div>
             </div>
 
