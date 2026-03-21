@@ -1,6 +1,6 @@
 # 🏙️ Residential Management System (RMS)
 
-**ER-Diagram:** [dbdiagram.io/d/RMS-69b92e9678c6c4bc7a022031](https://dbdiagram.io/d/RMS-69b92e9678c6c4bc7a022031)
+**ER-Diagram:** https://supabase.com/dashboard/project/fyuoewrpkebvtvkdmxsw/database/schemas
 
 ### 📝 Project Overview
 The Residential Management System (RMS) is a full-stack web application developed to simplify apartment administration and improve communication between the building manager and residents.

@@ -1,4 +1,5 @@
 package com.example.RMS.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,3 @@ public class Notice {
     @Column(nullable = false)
     private LocalDateTime date = LocalDateTime.now();
 }
-

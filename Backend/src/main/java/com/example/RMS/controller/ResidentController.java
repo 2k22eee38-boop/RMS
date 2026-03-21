@@ -1,8 +1,12 @@
 package com.example.RMS.controller;
 
-import com.example.RMS.dto.Request.ComplaintRequest; // Assuming path based on others
-import com.example.RMS.dto.Request.VacationRequestDTO; // Assuming path based on others
+import com.example.RMS.dto.Request.AmenityBookingRequest;
+import com.example.RMS.dto.Request.ComplaintRequest;
+import com.example.RMS.dto.Request.VacationRequestDTO;
+import com.example.RMS.entity.AmenityBooking;
 import com.example.RMS.entity.Complaint;
+import com.example.RMS.entity.Employee;
+import com.example.RMS.entity.Facility;
 import com.example.RMS.entity.Notice;
 import com.example.RMS.entity.VacationRequest;
 import com.example.RMS.service.ResidentService;
@@ -20,6 +24,26 @@ import java.util.List;
 public class ResidentController {
 
     private final ResidentService residentService;
+
+    @GetMapping("/facilities")
+    public ResponseEntity<List<Facility>> getAllFacilities() {
+        return ResponseEntity.ok(residentService.getAllFacilities());
+    }
+
+    @PostMapping("/amenities")
+    public ResponseEntity<AmenityBooking> createAmenityBooking(@RequestHeader("Resident-Id") Long residentId, @RequestBody AmenityBookingRequest request) {
+        return ResponseEntity.ok(residentService.createAmenityBooking(residentId, request));
+    }
+
+    @GetMapping("/amenities")
+    public ResponseEntity<List<AmenityBooking>> getMyAmenityBookings(@RequestHeader("Resident-Id") Long residentId) {
+        return ResponseEntity.ok(residentService.getMyAmenityBookings(residentId));
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(residentService.getAllEmployees());
+    }
 
     @GetMapping("/notices")
     public ResponseEntity<List<Notice>> getNotices() {
@@ -47,3 +71,4 @@ public class ResidentController {
         return ResponseEntity.ok(residentService.submitVacationRequest(residentId, LocalDate.parse(request.getVacateDate()), request.getReason()));
     }
 }
+

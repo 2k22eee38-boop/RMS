@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
-import ManagerDashboard from './components/ManagerDashboard';
-import ResidentDashboard from './components/ResidentDashboard';
+import ManagerDashboard from './pages/ManagerDashboard';
+import ResidentDashboard from './pages/ResidentDashboard';
 
 function App() {
   return (

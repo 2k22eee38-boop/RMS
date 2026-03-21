@@ -1,0 +1,38 @@
+/* Login Page Styling (Split Screen) */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.login-hero {
+  flex: 1.2;
+  background: linear-gradient(rgba(26, 44, 66, 0.4), rgba(26, 44, 66, 0.4));
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 60px;
+}
+
+@media (max-width: 992px) {
+  .login-hero {
+    display: none;
+  }
+}
+
+.login-form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: #fff;
+}
+
+.login-card-flat {
+  max-width: 440px;
+  width: 100%;
+}

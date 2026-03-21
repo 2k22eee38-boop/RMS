@@ -1,7 +1,6 @@
 package com.example.RMS.dto.Request;
 
 import com.example.RMS.entity.User;
-
 import lombok.Data;
 
 @Data
@@ -15,3 +14,5 @@ public class UserRequest {
     private String phone;
     private String email;
 }
+
+

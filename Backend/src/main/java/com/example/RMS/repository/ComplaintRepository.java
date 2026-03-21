@@ -1,12 +1,10 @@
 package com.example.RMS.repository;
 
-import java.util.List;
-
+import com.example.RMS.entity.Complaint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.RMS.entity.Complaint;
-
+import java.util.List;
 
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
