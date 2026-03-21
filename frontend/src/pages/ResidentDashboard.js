@@ -7,8 +7,6 @@ import {
     MessageSquare,
     Calendar,
     Clock,
-    Info,
-    CheckCircle2,
     Briefcase,
     Coffee,
     ChevronLeft,
