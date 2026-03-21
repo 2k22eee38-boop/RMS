@@ -17,7 +17,6 @@ import {
     Home,
     AlertTriangle,
     CheckCircle2,
-    Building2,
     Clock,
     Dumbbell,
     Waves,
@@ -47,6 +46,9 @@ const ManagerDashboard = () => {
     const [noticeTitle, setNoticeTitle] = useState('');
     const [noticeContent, setNoticeContent] = useState('');
     const [noticeMessage, setNoticeMessage] = useState('');
+
+    // Complaints Data
+    const [complaints, setComplaints] = useState([]);
 
     // Vacation Data
     const [vacationRequests, setVacationRequests] = useState([]);
